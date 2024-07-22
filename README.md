@@ -26,24 +26,31 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 const users = [
   {
     id: "a37a0ba6-b75a-4cb0-8c4a-7815d3e25594",
+    uid: "AWSP45987", // Unique Id, for Students = PRN, for Teacher = Teacher Id, for Admin = AdminId etc
     name: "Diya Bhujbal",
     email: "diya.bhujbal@example.com",
     password: "123456", // This is sample, in db password will be stored after hashing it
+    role: "student",
   },
   {
     id: "42cfa51c-d31c-460e-b3dd-0159a771bfdf",
+    uid: "SLDI63541",
     name: "Ayusha Jadhav",
     email: "ayusha.jadhav@example.com",
     password: "789101",
+    role: "student",
   },
   {
     id: "7a8b7dd6-3295-47a6-a8c8-64f978babeb1",
     name: "Rutuja Kirad",
+    uid: "OPLS45823",
     email: "rutuja.kirad@example.com",
     password: "111213",
+    role: "student",
   },
   {
     id: "4be0030f-937c-402f-ac54-8366ac6d52ca",
+    uid: "SLWY96541",
     name: "Reena Bharathi",
     email: "reena.bharathi@example.com",
     password: "141516",
@@ -51,6 +58,7 @@ const users = [
   },
   {
     id: "1f590e33-db8b-4fd4-a61d-5b4c40be9b73",
+    uid: "LOQL74582",
     name: "Balaji Pachai",
     email: "balaji.pachai@example.com",
     password: "171819",
@@ -65,10 +73,12 @@ const users = [
 ```javascript
 export type Users = {
   id: string,
+  uid: string,
   name: string,
   email: string,
   password: string,
-  role: "student" | "teacher" | "admin", // In TypeScript, this is called a string union type.  It means that the "role" property can only be one of the three strings: 'student' or 'teacher' or 'admin'.
+  role: "student" | "teacher" | "admin" | "external", // In TypeScript, this is called a string union type.  It means that the "role" property can only be one of the three strings: 'student' or 'teacher' or 'admin' or 'external'.
+  // external can be either of 'it-expert' OR 'project-guide' OR 'guest-lecturer' OR anything
 };
 ```
 
@@ -94,6 +104,26 @@ export type Users = {
 ```
 
 - `Link` is important to navigate between pages `without a full refresh`.
+
+## Configuring Database (MongoDB)
+
+- [Configuration Steps In Details](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/mongodb-typescript-mongodb)
+- `pnpm install prisma typescript ts-node @types/node --save-dev`
+- `pnpm prisma init` this generates the below next steps (kept only the stuff that makes your understanding easier)
+
+  1. Set the `DATABASE_URL` in the `.env` file to point to your existing database.
+  2. Set the provider of the datasource block in schema.prisma to match your database: `mongodb`.
+  3. Run `pnpm prisma db pull` to turn your database schema into a Prisma schema.
+  4. Run `pnpm prisma generate` to generate the Prisma Client. You can then start querying your database.
+  5. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and real-time database events. Read: https://pris.ly/beyond-the-orm
+
+- The table definitions must be defined inside `prisma/schema.prisma`. After defining the tables.
+- `pnpm prisma-validate`
+- `pnpm prisma format`
+- `pnpm prisma generate`
+- `pnpm prisma db push` (DO THIS IFF YOU HAVE ADDED NEW TABLES OR MODIFIED `prisma/schema.prisma`)
+
+## Using Server Components to fetch data
 
 ## Deploy on Vercel
 
